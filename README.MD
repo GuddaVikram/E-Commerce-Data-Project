@@ -57,3 +57,8 @@
 - Created RAW tables in PostgreSQL for each source dataset.
 - Loaded raw CSV files directly into PostgreSQL tables without applying any transformations.
 - This layer preserves source-level data integrity and acts as the foundation for downstream transformation layers.
+
+## Data Exploration:
+- Before creating staging models, Performed the data profiling on raw tables to understand the data types,null, patterns etc.
+
+## 

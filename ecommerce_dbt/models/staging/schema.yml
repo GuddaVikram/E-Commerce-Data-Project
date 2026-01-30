@@ -1,0 +1,67 @@
+version: 2
+
+sources:
+  - name: raw
+    database: postgres
+    schema: raw
+    tables:
+      - name: customers
+      - name: orders
+      - name: order_items
+      - name: products
+      - name: sellers
+      - name: order_payments
+      - name: geolocation
+    
+models:
+
+  - name: stg_customers
+    description: "Cleaned and standardized customer data"
+    columns:
+      - name: id
+        description: "Primary key for customers"
+        tests:
+          - not_null
+          - unique
+
+      - name: unique_id
+        tests:
+          - not_null
+
+  - name: stg_orders
+    description: "Cleaned order-level data"
+    columns:
+      - name: id
+        tests:
+          - not_null
+          - unique
+
+      - name: customer_id
+        tests:
+          - not_null
+
+  - name: stg_order_items
+    description: "Order line items"
+    columns:
+      - name: order_id
+        tests:
+          - not_null
+
+      - name: item_id
+        tests:
+          - not_null
+
+  - name: stg_payments
+    description: "Order payment details"
+    columns:
+      - name: order_id
+        tests:
+          - not_null
+
+  - name: stg_products
+    description: "Product master data"
+    columns:
+      - name: id
+        tests:
+          - not_null
+          - unique
