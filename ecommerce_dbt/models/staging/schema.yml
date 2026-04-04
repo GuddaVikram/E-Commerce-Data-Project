@@ -1,22 +1,76 @@
 version: 2
 
+########################################
+# SOURCES (RAW DATA CONTRACT)
+########################################
+
 sources:
   - name: raw
     database: postgres
     schema: raw
+    description: "Raw ecommerce datasets ingested from CSV files"
+
     tables:
       - name: customers
+        description: "Raw customer data"
+        columns:
+          - name: customer_id
+            tests:
+              - not_null
+              - unique
+
       - name: orders
+        description: "Raw orders data"
+        columns:
+          - name: order_id
+            tests:
+              - not_null
+              - unique
+
       - name: order_items
+        description: "Raw order items data"
+        columns:
+          - name: order_id
+            tests:
+              - not_null
+          - name: order_item_id
+            tests:
+              - not_null
+
       - name: products
+        description: "Raw product catalog"
+        columns:
+          - name: product_id
+            tests:
+              - not_null
+              - unique
+
       - name: sellers
+        description: "Raw seller data"
+        columns:
+          - name: seller_id
+            tests:
+              - not_null
+              - unique
+
       - name: order_payments
+        description: "Raw payment transactions"
+        columns:
+          - name: order_id
+            tests:
+              - not_null
+
       - name: geolocation
-    
+        description: "Zip code geolocation reference data"
+
+########################################
+# STAGING MODELS (CONTRACT LAYER)
+########################################
+
 models:
 
   - name: stg_customers
-    description: "Cleaned and standardized customer data"
+    description: "Contract layer for cleaned and standardized customer data"
     columns:
       - name: id
         description: "Primary key for customers"
@@ -25,43 +79,120 @@ models:
           - unique
 
       - name: unique_id
+        description: "Unique customer identifier across orders"
         tests:
           - not_null
 
+      - name: city
+        description: "Customer city"
+
+      - name: state
+        description: "Customer state"
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                ['SP','RJ','MG','RS','PR','SC','BA','PE','CE','GO','DF','ES','PA','AM','MA','RN','PB','AL','SE','PI','TO','RO','AC','RR','AP','MT','MS']
+
   - name: stg_orders
-    description: "Cleaned order-level data"
+    description: "Contract layer for order-level data"
     columns:
       - name: id
+        description: "Primary key for orders"
         tests:
           - not_null
           - unique
 
       - name: customer_id
+        description: "Customer who placed the order"
+        tests:
+          - not_null
+
+      - name: status
+        description: "Order lifecycle status"
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                ['delivered','shipped','processing','invoiced','canceled','approved','created','unavailable']
+
+      - name: purchased_at
+        description: "Order purchase timestamp"
         tests:
           - not_null
 
   - name: stg_order_items
-    description: "Order line items"
+    description: "Contract layer for order line items"
     columns:
       - name: order_id
+        description: "Order identifier"
         tests:
           - not_null
 
       - name: item_id
+        description: "Item sequence number within order"
+        tests:
+          - not_null
+
+      - name: product_id
+        description: "Purchased product identifier"
+        tests:
+          - not_null
+
+      - name: seller_id
+        description: "Seller identifier"
+        tests:
+          - not_null
+
+      - name: price
+        description: "Item price"
         tests:
           - not_null
 
   - name: stg_payments
-    description: "Order payment details"
+    description: "Contract layer for payment transactions"
     columns:
       - name: order_id
+        description: "Order identifier"
+        tests:
+          - not_null
+
+      - name: payment_type
+        description: "Payment method"
+        tests:
+          - not_null
+          - accepted_values:
+              values:
+                ['credit_card','debit_card','voucher','boleto','pix','not_defined']
+
+      - name: payment_amount
+        description: "Amount paid"
         tests:
           - not_null
 
   - name: stg_products
-    description: "Product master data"
+    description: "Contract layer for product master data"
+    columns:
+      - name: id
+        description: "Primary key for products"
+        tests:
+          - not_null
+          - unique
+
+      - name: category
+        description: "Product category"
+
+      - name: weight_g
+        description: "Product weight in grams"
+        
+  - name: stg_sellers
+    description: "Cleaned and standardized seller data"
     columns:
       - name: id
         tests:
           - not_null
           - unique
+
+      - name: state
+        tests:
+          - not_null

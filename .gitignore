@@ -1,0 +1,12 @@
+# Secrets
+.env
+
+# CSV data (optional if very large)
+data/raw/*.csv
+
+# OS files
+data/.DS_Store
+.DS_Store
+
+dbt_packages/
+logs/

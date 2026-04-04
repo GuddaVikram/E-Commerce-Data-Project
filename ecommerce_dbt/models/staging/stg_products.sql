@@ -1,6 +1,6 @@
 select
     product_id::varchar        as id,
-    product_category_name::varchar as category,
+    coalesce(product_category_name, 'unknown')::varchar as category,
 
     product_name_length::int   as name_length,
     product_description_length::int as description_length,
