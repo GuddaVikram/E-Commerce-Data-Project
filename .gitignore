@@ -4,6 +4,9 @@
 # CSV data (optional if very large)
 data/raw/*.csv
 
+# IDE files
+.vscode/*
+
 # OS files
 data/.DS_Store
 .DS_Store
