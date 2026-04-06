@@ -106,12 +106,12 @@ models:
       - name: order_id
         tests: [not_null, unique]
 
-      - name: customer_id
+      - name: customer_sk
         tests:
           - not_null
           - relationships:
               to: ref('dim_customers')
-              field: customer_id
+              field: customer_sk
 
       - name: order_status
         tests:
@@ -138,19 +138,19 @@ models:
               to: ref('fact_orders')
               field: order_id
 
-      - name: product_id
+      - name: product_sk
         tests:
           - not_null
           - relationships:
               to: ref('dim_products')
-              field: product_id
+              field: product_sk
 
-      - name: seller_id
+      - name: seller_sk
         tests:
           - not_null
           - relationships:
               to: ref('dim_sellers')
-              field: seller_id
+              field: seller_sk
 
       - name: price
         tests:

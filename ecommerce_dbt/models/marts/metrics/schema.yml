@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: daily_revenue
+    columns:
+      - name: purchase_date
+        tests:
+          - not_null
+
+      - name: total_revenue
+        tests:
+          - not_null
+
+      - name: total_orders
+        tests:
+          - not_null
+
+  - name: monthly_revenue
+    columns:
+     - name: purchase_month
+       tests:
+         - not_null
+     - name: monthly_revenue
+       tests:
+         - not_null
+     - name: monthly_orders
+       tests:
+            - not_null    
+
