@@ -26,4 +26,4 @@ models:
      - name: monthly_orders
        tests:
             - not_null    
-
+  - name: customer_LTV
