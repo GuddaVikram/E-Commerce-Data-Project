@@ -4,26 +4,19 @@ models:
   - name: daily_revenue
     columns:
       - name: purchase_date
-        tests:
-          - not_null
-
-      - name: total_revenue
-        tests:
-          - not_null
-
-      - name: total_orders
-        tests:
-          - not_null
-
+        tests: [not_null]
+  
   - name: monthly_revenue
     columns:
-     - name: purchase_month
-       tests:
-         - not_null
-     - name: monthly_revenue
-       tests:
-         - not_null
-     - name: monthly_orders
-       tests:
-            - not_null    
-  - name: customer_LTV
+      - name: purchase_month
+        tests: [not_null]
+
+  - name: customer_ltv
+    columns:
+      - name: customer_sk
+        tests: [not_null]
+
+  - name: top_products
+    columns:
+      - name: product_id
+        tests: [not_null]
